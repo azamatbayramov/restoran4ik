@@ -1,0 +1,87 @@
+volumes:
+  db_data:
+  prom_data:
+  grafana_data:
+
+networks:
+  restoran4ik_network:
+    driver: bridge
+
+services:
+  mongodb:
+    container_name: restoran4ik_mongodb
+    image: mongo:7-jammy
+    volumes:
+      - db_data:/data/db
+    networks:
+      - restoran4ik_network
+    restart: unless-stopped
+    command: --quiet
+
+  api:
+    container_name: restoran4ik_api
+    build:
+      context: ..
+      dockerfile: ./docker/Dockerfile
+    networks:
+      - restoran4ik_network
+    env_file:
+      - ../config/.env
+    environment:
+      - IN_DOCKER=true
+    depends_on:
+      - mongodb
+
+  backups:
+    container_name: restoran4ik_backup
+    build:
+      context: ..
+      dockerfile: ./docker/Dockerfile_backup
+    volumes:
+      - ../backups:/backups
+    networks:
+      - restoran4ik_network
+    depends_on:
+      - mongodb
+
+  prometheus:
+    container_name: restoran4ik_prometheus
+    image: prom/prometheus
+    volumes:
+      - ../prometheus:/etc/prometheus
+      - prom_data:/prometheus
+    networks:
+      - restoran4ik_network
+    depends_on:
+      - api
+    restart: unless-stopped
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+
+  grafana:
+    container_name: restoran4ik_grafana
+    image: grafana/grafana
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ../grafana:/etc/grafana
+    env_file:
+      - ../config/.env
+    networks:
+      - restoran4ik_network
+    depends_on:
+      - prometheus
+    restart: unless-stopped
+
+  nginx:
+    container_name: restoran4ik_nginx
+    image: nginx:latest
+    volumes:
+      - ../nginx:/etc/nginx/conf.d
+      - ../static:/etc/nginx/html
+    networks:
+      - restoran4ik_network
+    ports:
+      - "80:80"
+    depends_on:
+      - api
+      - grafana
