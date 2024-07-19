@@ -1,4 +1,4 @@
-export interface Tag {
+export interface DishTag {
     id?: string;
 
     name: string;
