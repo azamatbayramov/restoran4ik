@@ -9,7 +9,7 @@ interface Table {
   isOccupied: boolean;
 }
 
-// Initial list of tables. Add from firebase pls
+// Initial list of tables
 const initialTables: Table[] = [
   { id: 1, title: "Table 1", isOccupied: true },
   { id: 2, title: "Table 2", isOccupied: false },
@@ -19,20 +19,21 @@ const initialTables: Table[] = [
 ];
 
 const Page: React.FC = () => {
-  // Use state to manage the list of tables and edit mode
+  // State to manage the list of tables, edit mode, and current editing table
   const [tables, setTables] = useState<Table[]>(initialTables);
   const [editMode, setEditMode] = useState<boolean>(false);
+  const [editingTableId, setEditingTableId] = useState<number | null>(null);
+  const [newTitle, setNewTitle] = useState<string>("");
 
   // Function to add a new table
   const addTable = () => {
-    // Find the maximum existing table ID
     const maxId = tables.reduce((max, table) => Math.max(max, table.id), 0);
     const newTableNumber = maxId + 1;
     
     const newTable: Table = {
-      id: newTableNumber, // Assign a new unique id based on the highest existing id
+      id: newTableNumber,
       title: `Table ${newTableNumber}`,
-      isOccupied: false, // Defaulting new tables to 'Available'
+      isOccupied: false,
     };
     setTables((prevTables) => [...prevTables, newTable]);
   };
@@ -40,6 +41,10 @@ const Page: React.FC = () => {
   // Function to toggle edit mode
   const toggleEditMode = () => {
     setEditMode((prevEditMode) => !prevEditMode);
+    if (editMode) {
+      setEditingTableId(null);
+      setNewTitle("");
+    }
   };
 
   // Function to delete a table by id
@@ -49,11 +54,26 @@ const Page: React.FC = () => {
 
   // Function to toggle the isOccupied status of a table
   const toggleOccupiedStatus = (id: number) => {
-    setTables((prevTables) =>
-      prevTables.map((table) =>
-        table.id === id ? { ...table, isOccupied: !table.isOccupied } : table
-      )
-    );
+    if (editMode) {
+      setTables((prevTables) =>
+        prevTables.map((table) =>
+          table.id === id ? { ...table, isOccupied: !table.isOccupied } : table
+        )
+      );
+    }
+  };
+
+  // Function to handle renaming a table
+  const handleRename = () => {
+    if (editingTableId !== null) {
+      setTables((prevTables) =>
+        prevTables.map((table) =>
+          table.id === editingTableId ? { ...table, title: newTitle } : table
+        )
+      );
+      setEditingTableId(null);
+      setNewTitle("");
+    }
   };
 
   return (
@@ -63,8 +83,8 @@ const Page: React.FC = () => {
         <div className="flex space-x-4 mb-6">
           <button
             onClick={addTable}
-            disabled={editMode} // Disable the button when in edit mode
-            className={`bg-cyan-400 text-white font-bold py-2 px-4 rounded hover:bg-cyan-500 ${editMode ? 'opacity-50 cursor-not-allowed' : ''}`}
+            disabled={editMode}
+            className={`bg-cyan-400 text-white font-bold py-2 px-4 rounded hover:bg-cyan-500 focus:outline-none focus:ring-2 focus:ring-cyan-300 focus:ring-opacity-75 ${editMode ? 'opacity-50 cursor-not-allowed' : ''}`}
           >
             + Add Table
           </button>
@@ -77,15 +97,41 @@ const Page: React.FC = () => {
             {editMode ? 'Done' : 'Edit'}
           </button>
         </div>
+        {editMode && editingTableId !== null && (
+          <div className="mb-6 flex items-center">
+            <input
+              type="text"
+              value={newTitle}
+              onChange={(e) => setNewTitle(e.target.value)}
+              className="border border-gray-300 p-2 rounded"
+              placeholder="Enter new title"
+            />
+            <button
+              onClick={handleRename}
+              className="ml-4 bg-cyan-400 text-white font-bold py-2 px-4 rounded hover:bg-cyan-500"
+            >
+              Rename
+            </button>
+          </div>
+        )}
         <div className="grid gap-16 md:grid-cols-2 lg:grid-cols-3 justify-items-center">
           {tables.map((table) => (
             <div key={table.id} className="relative">
-              <div
-                onClick={() => editMode && toggleOccupiedStatus(table.id)}
-                className="cursor-pointer"
-              >
-                <TableCard title={table.title} isOccupied={table.isOccupied} />
-              </div>
+              <TableCard
+                title={table.title}
+                isOccupied={table.isOccupied}
+                onCircleClick={() => {
+                  if (editMode) {
+                    toggleOccupiedStatus(table.id);
+                  }
+                }}
+                onTitleClick={() => {
+                  if (editMode) {
+                    setEditingTableId(table.id);
+                    setNewTitle(table.title);
+                  }
+                }}
+              />
               {editMode && (
                 <button
                   onClick={() => deleteTable(table.id)}
