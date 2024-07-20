@@ -39,7 +39,7 @@
                 <div id="menu-list" className="md:flex md:items-center bg-orange-600 md:z-auto md:static fixed w-full left-0 md:w-auto md:py-0 py-4 md:pl-0 pl-7 md:opacity-100 opacity-0 top-[-400px] transition-all ease-in duration-300 z-[1000]">
                     <a href="/meals" className="block mx-6 my-6 md:my-0 text-white hover:text-gray-300 font-semibold">Meals</a>
                     <a href="/tables" className="block mx-6 my-6 md:my-0 text-white hover:text-gray-300 font-semibold">Tables</a>
-                    <a href="#" className="inline-block bg-cyan-400 text-white duration-500 px-6 py-2 mx-6 hover:bg-cyan-500 rounded whitespace-nowrap font-semibold">
+                    <a href="/login" className="inline-block bg-cyan-400 text-white duration-500 px-6 py-2 mx-6 hover:bg-cyan-500 rounded whitespace-nowrap font-semibold">
                         Log in
                     </a>
                 </div>
