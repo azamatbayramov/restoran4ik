@@ -21,7 +21,10 @@ const Page: React.FC = () => {
 
     // Function to add a new table
     const addTable = () => {
-        const maxId = tables.reduce((max, table) => Math.max(max, parseInt(table.id)), 0);
+        const maxId = tables.reduce(
+            (max, table) => Math.max(max, parseInt(table.id)),
+            0,
+        );
         const newTableNumber = maxId + 1;
 
         const newTable: Table = {

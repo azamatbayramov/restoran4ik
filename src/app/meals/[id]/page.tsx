@@ -15,9 +15,8 @@ interface MealDetailPageProps {
 
 const MealDetailPage: React.FC<MealDetailPageProps> = ({ params }) => {
     const { id } = params;
-    const mealId = parseInt(id, 10);
 
-    return <MealDetail mealId={mealId} />;
+    return <MealDetail mealId={id} />;
 };
 
 export default MealDetailPage;

@@ -1,9 +1,34 @@
+export interface BJU {
+    protein: number;
+    fat: number;
+    carbs: number;
+}
+
 export interface Meal {
-    id?: string;
-    name: string;
+    id: string;
+
+    title: string;
     description: string;
-    image: string;
+    composition: string;
+    bju: BJU;
+
+    imageSrc: string | null;
+
     tags: string[];
+
+    price: number;
+
+    available: boolean;
+}
+
+export interface NewMeal {
+    image: string | null;
+    title: string;
     price: number;
     available: boolean;
+    tags: string[];
+    description: string;
+    imageFile: File | null;
+    composition: string;
+    bju: BJU;
 }
