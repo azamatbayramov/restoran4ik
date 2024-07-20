@@ -27,14 +27,14 @@ const getDocument = async (collectionName: string, id: string) => {
     }
 };
 
-const addDocument = async (collectionName: string, data: any) => {
+const addDocument = async (collectionName: string, data: never) => {
     return await addDoc(collection(db, collectionName), data);
 };
 
 const updateDocument = async (
     collectionName: string,
     id: string,
-    data: any,
+    data: never,
 ) => {
     const docRef = doc(db, collectionName, id);
     return await updateDoc(docRef, data);

@@ -89,9 +89,9 @@ const About: React.FC = () => {
                         </h2>
                         <p>
                             If you have any questions, feedback, or inquiries,
-                            please don't hesitate to reach out to us. We are
-                            here to help and continuously improve our system to
-                            better serve your needs.
+                            please don&apos;t hesitate to reach out to us. We
+                            are here to help and continuously improve our system
+                            to better serve your needs.
                         </p>
                     </section>
                 </div>
