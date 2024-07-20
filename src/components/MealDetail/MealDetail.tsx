@@ -45,7 +45,6 @@ const MealDetail: React.FC<MealDetailProps> = ({ mealId }) => {
         backgroundColor: '#e0e0e0',
         borderRadius: '8px',
         marginRight: '20px',
-        objectFit: 'cover',
     };
 
     const detailsStyle = {
@@ -85,7 +84,11 @@ const MealDetail: React.FC<MealDetailProps> = ({ mealId }) => {
     return (
         <div style={mainStyle}>
             <div style={containerStyle}>
-                <img style={imageStyle} src={meal.imageSrc} alt={meal.title} />
+                <img
+                    style={imageStyle}
+                    src={meal.imageSrc || 'https://via.placeholder.com/300'}
+                    alt={meal.title}
+                />
                 <div style={detailsStyle}>
                     <div style={headerStyle}>{meal.title}</div>{' '}
                     {/* Dish name in colored block */}
