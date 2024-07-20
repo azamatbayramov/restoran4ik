@@ -27,14 +27,19 @@ const getDocument = async (collectionName: string, id: string) => {
     }
 };
 
-const addDocument = async (collectionName: string, data: never) => {
+const addDocument = async (
+    collectionName: string,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    data: any,
+) => {
     return await addDoc(collection(db, collectionName), data);
 };
 
 const updateDocument = async (
     collectionName: string,
     id: string,
-    data: never,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    data: any,
 ) => {
     const docRef = doc(db, collectionName, id);
     return await updateDoc(docRef, data);
