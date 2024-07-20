@@ -1,0 +1,14 @@
+/* src/styles/MealPage.module.css */
+.container {
+  padding: 20px;
+}
+.meal-card {
+  border: 1px solid #ccc;
+  padding: 16px;
+  margin: 16px;
+  text-align: center;
+}
+.meal-card img {
+  width: 100%;
+  height: auto;
+}
