@@ -2,25 +2,10 @@
 
 import { useEffect, useState } from 'react';
 import { meals } from '@/data/meals';
-
-interface BJU {
-    protein: number;
-    fat: number;
-    carbs: number;
-}
-
-interface Meal {
-    id: number;
-    title: string;
-    price: string;
-    imageSrc: string;
-    composition: string;
-    bju: BJU;
-    description: string;
-}
+import { Meal } from '@/types/meal';
 
 interface MealDetailProps {
-    mealId: number;
+    mealId: string;
 }
 
 const MealDetail: React.FC<MealDetailProps> = ({ mealId }) => {

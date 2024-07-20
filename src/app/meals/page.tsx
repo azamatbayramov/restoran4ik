@@ -1,61 +1,23 @@
 'use client';
 import React, { useState } from 'react';
 import MealCard from '@/components/MealCard/MealCard';
-import { Dish } from '@/types/dish';
+import { Meal, NewMeal } from '@/types/meal';
+import { meals } from '@/data/meals';
 
-const initialMeals: Dish[] = [
-    {
-        id: '1',
-        image: 'https://via.placeholder.com/400x300',
-        name: 'Spaghetti Carbonara',
-        price: 14.99,
-        available: false,
-        tags: ['Italian', 'Pasta'],
-        description:
-            'A classic Italian pasta dish made with eggs, cheese, pancetta, and pepper.',
-    },
-    {
-        id: '2',
-        image: 'https://via.placeholder.com/400x300',
-        name: 'Chicken Parmesan',
-        price: 16.99,
-        available: true,
-        tags: ['Italian', 'Chicken'],
-        description:
-            'Breaded chicken cutlets topped with marinara sauce and melted cheese.',
-    },
-    {
-        id: '3',
-        image: 'https://via.placeholder.com/400x300',
-        name: 'Caesar Salad',
-        price: 12.99,
-        available: true,
-        tags: ['Salad', 'Healthy'],
-        description:
-            'A fresh salad with romaine lettuce, croutons, and Caesar dressing.',
-    },
-];
-
-interface NewDish {
-    image: string | null;
-    name: string;
-    price: number;
-    available: boolean;
-    tags: string[];
-    description: string;
-    imageFile: File | null;
-}
+const initialMeals: Meal[] = meals;
 
 const Page: React.FC = () => {
-    const [meals, setMeals] = useState<Dish[]>(initialMeals);
-    const [newDish, setNewDish] = useState<NewDish>({
+    const [meals, setMeals] = useState<Meal[]>(initialMeals);
+    const [newDish, setNewDish] = useState<NewMeal>({
         image: null,
-        name: '',
+        title: '',
         price: 0,
         available: false,
         tags: [],
         description: '',
         imageFile: null,
+        composition: '',
+        bju: { protein: 0, fat: 0, carbs: 0 },
     });
     const [isFormVisible, setFormVisible] = useState<boolean>(false);
 
@@ -66,7 +28,7 @@ const Page: React.FC = () => {
     const validateForm = () => {
         const newErrors: { [key: string]: string } = {};
 
-        if (!newDish.name.trim()) {
+        if (!newDish.title.trim()) {
             newErrors.name = 'Name is required.';
         }
 
@@ -90,9 +52,9 @@ const Page: React.FC = () => {
     const handleAddDish = () => {
         if (validateForm()) {
             // Data for DB (adding new meal). imageFile - uploaded file, image - just temp URL
-            const dishToAdd: Dish = {
+            const dishToAdd: Meal = {
                 ...newDish,
-                image: newDish.imageFile
+                imageSrc: newDish.imageFile
                     ? URL.createObjectURL(newDish.imageFile)
                     : (newDish.image ?? 'https://via.placeholder.com/400x300'),
                 price: parseFloat(newDish.price.toString()),
@@ -102,12 +64,14 @@ const Page: React.FC = () => {
             setMeals([...meals, dishToAdd]);
             setNewDish({
                 image: null,
-                name: '',
+                title: '',
                 price: 0,
                 available: false,
                 tags: [],
                 description: '',
                 imageFile: null,
+                composition: '',
+                bju: { protein: 0, fat: 0, carbs: 0 },
             });
             setFormVisible(false);
             setErrors({});
@@ -153,10 +117,13 @@ const Page: React.FC = () => {
                         />
                         <input
                             type="text"
-                            placeholder="Dish name"
-                            value={newDish.name}
+                            placeholder="Meal name"
+                            value={newDish.title}
                             onChange={(e) =>
-                                setNewDish({ ...newDish, name: e.target.value })
+                                setNewDish({
+                                    ...newDish,
+                                    title: e.target.value,
+                                })
                             }
                             className={`border py-2 px-4 mb-2 rounded w-full max-w-xs ${errors.name ? 'border-red-500' : 'border-gray-300'}`}
                         />
@@ -245,8 +212,8 @@ const Page: React.FC = () => {
                     <div key={dish.id} className="max-w-xs w-full">
                         <MealCard
                             id={dish.id}
-                            imageSrc={dish.image}
-                            title={dish.name}
+                            imageSrc={dish.imageSrc}
+                            title={dish.title}
                             price={dish.price.toFixed(2)}
                             available={dish.available}
                         />

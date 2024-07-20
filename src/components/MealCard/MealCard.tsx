@@ -2,8 +2,8 @@ import React from 'react';
 import Link from 'next/link';
 
 interface MealCardProps {
-    id: string;
-    imageSrc: string;
+    id: string | null;
+    imageSrc: string | null;
     title: string;
     price: string;
     available: boolean;
@@ -23,7 +23,7 @@ const MealCard: React.FC<MealCardProps> = ({
                 {}
                 <img
                     className="absolute inset-0 w-full h-full object-cover"
-                    src={imageSrc}
+                    src={imageSrc || 'https://via.placeholder.com/400x300'}
                     alt={title}
                 />
             </div>
