@@ -165,7 +165,7 @@ const Page: React.FC = () => {
                 )}
             </div>
 
-            <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-items-center">
+            <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-items-center gap-12">
                 {meals.map((dish) => (
                     <div key={dish.id} className="max-w-xs w-full">
                         <MealCard

@@ -11,8 +11,8 @@ interface MealCardProps {
 
 const MealCard: React.FC<MealCardProps> = ({id, imageSrc, title, price, available }) => {
     return (
-        <div className="max-w-sm rounded overflow-hidden shadow-lg bg-white">
-            <div className="relative w-full" style={{ paddingTop: '75%' }}> {}
+        <div className="max-w-lg w-full rounded overflow-hidden shadow-lg bg-white">
+            <div className="relative w-full" style={{ paddingTop: '85%' }}> {}
                 <img
                     className="absolute inset-0 w-full h-full object-cover"
                     src={imageSrc}
@@ -21,7 +21,9 @@ const MealCard: React.FC<MealCardProps> = ({id, imageSrc, title, price, availabl
             </div>
             <div className="px-6 py-4 flex items-center justify-between">
                 <div className="flex-1">
-                    <div className="font-bold text-xl mb-2">{title}</div>
+                    <div className="font-bold text-xl mb-2" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                        {title}
+                    </div>
                     <p className="text-gray-700 text-base flex justify-between">
                         ${price}
                         <span
@@ -30,8 +32,10 @@ const MealCard: React.FC<MealCardProps> = ({id, imageSrc, title, price, availabl
                         />
                     </p>
                 </div>
+            </div>
+            <div className="mt-auto mb-2 ml-6 flex justify-left">
                 <Link href={`/meals/${id}`}>
-                    <p>View Details</p>
+                    <p className="text-cyan-400 hover:underline font-semibold">View Details</p>
                 </Link>
             </div>
         </div>
