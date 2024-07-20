@@ -108,7 +108,7 @@ const Page: React.FC = () => {
           <button
             onClick={addTable}
             disabled={editMode}
-            className={`bg-cyan-400 text-white font-bold py-2 px-4 rounded hover:bg-cyan-500 focus:outline-none focus:ring-2 focus:ring-cyan-300 focus:ring-opacity-75 ${
+            className={`bg-cyan-400 text-white font-bold py-2 px-4 rounded hover:bg-cyan-500 focus:outline-none ${
               editMode ? 'opacity-50 cursor-not-allowed' : ''
             }`}
           >
