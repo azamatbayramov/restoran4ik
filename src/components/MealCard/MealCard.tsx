@@ -1,4 +1,3 @@
-// src/components/MealCard.tsx
 import Link from 'next/link';
 
 interface MealCardProps {
