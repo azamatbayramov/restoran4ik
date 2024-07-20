@@ -2,7 +2,12 @@
 import React, { useState } from 'react';
 import TableCard from '@/components/TableCard/TableCard';
 import { Table } from '@/types/table';
-import { addTable, deleteTable, getTableById, getTables, updateTable } from '@/firebase/entities/tables';
+import {
+    addTable,
+    deleteTable,
+    getTables,
+    updateTable,
+} from '@/firebase/entities/tables';
 
 const Page: React.FC = () => {
     // State to manage the list of tables, edit mode, and current editing table
@@ -151,19 +156,21 @@ const Page: React.FC = () => {
                                 isOccupied={table.isOccupied}
                                 onCircleClick={() => {
                                     if (editMode) {
-                                        toggleOccupiedStatus(table.id);
+                                        toggleOccupiedStatus(table.id || '');
                                     }
                                 }}
                                 onTitleClick={() => {
                                     if (editMode) {
-                                        setEditingTableId(table.id);
+                                        setEditingTableId(table.id || null);
                                         setNewTitle(table.title);
                                     }
                                 }}
                             />
                             {editMode && (
                                 <button
-                                    onClick={() => deleteTableFunc(table.id)}
+                                    onClick={() =>
+                                        deleteTableFunc(table.id || '')
+                                    }
                                     className="absolute top-2 right-2 bg-red-600 text-white rounded-full h-6 w-6 flex items-center justify-center hover:bg-red-800"
                                 >
                                     X
