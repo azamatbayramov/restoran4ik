@@ -2,7 +2,8 @@
 import React, { useState } from 'react';
 import MealCard from '@/components/MealCard/MealCard';
 import { Meal, NewMeal } from '@/types/meal';
-import { getMeals } from '@/firebase/entities/meals';
+import { addMeal, getMeals } from '@/firebase/entities/meals';
+import { upload } from '@/api/upload';
 
 const Page: React.FC = () => {
     const [meals, setMeals] = useState<Meal[]>([]);
@@ -50,32 +51,42 @@ const Page: React.FC = () => {
     };
 
     const handleAddDish = () => {
-        if (validateForm()) {
-            // Data for DB (adding new meal). imageFile - uploaded file, image - just temp URL
+        if (!validateForm()) {
+            return;
+        }
+
+        if (!newDish.imageFile) {
+            setErrors({
+                ...errors,
+                image: 'Image is required.',
+            });
+            return;
+        }
+
+        upload(newDish.imageFile).then((url) => {
+            newDish.imageFile = null;
             const dishToAdd: Meal = {
                 ...newDish,
-                imageSrc: newDish.imageFile
-                    ? URL.createObjectURL(newDish.imageFile)
-                    : (newDish.image ?? 'https://via.placeholder.com/400x300'),
+                imageSrc: url,
                 price: parseFloat(newDish.price.toString()),
-                id: (meals.length + 1).toString(),
             };
 
-            setMeals([...meals, dishToAdd]);
-            setNewDish({
-                image: null,
-                title: '',
-                price: 0,
-                available: false,
-                tags: [],
-                description: '',
-                imageFile: null,
-                composition: '',
-                bju: { protein: 0, fat: 0, carbs: 0 },
-            });
-            setFormVisible(false);
-            setErrors({});
-        }
+            addMeal(dishToAdd);
+        });
+
+        setNewDish({
+            image: null,
+            title: '',
+            price: 0,
+            available: false,
+            tags: [],
+            description: '',
+            imageFile: null,
+            composition: '',
+            bju: { protein: 0, fat: 0, carbs: 0 },
+        });
+        setFormVisible(false);
+        setErrors({});
     };
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -211,7 +222,7 @@ const Page: React.FC = () => {
                 {meals.map((dish) => (
                     <div key={dish.id} className="max-w-xs w-full">
                         <MealCard
-                            id={dish.id}
+                            id={dish.id || ''}
                             imageSrc={dish.imageSrc}
                             title={dish.title}
                             price={dish.price.toFixed(2)}

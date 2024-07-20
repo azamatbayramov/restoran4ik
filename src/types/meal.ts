@@ -5,7 +5,7 @@ export interface BJU {
 }
 
 export interface Meal {
-    id: string;
+    id?: string;
 
     title: string;
     description: string;
