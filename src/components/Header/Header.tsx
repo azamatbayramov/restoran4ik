@@ -29,7 +29,7 @@
         return (
             <header className="fixed top-0 left-0 w-full h-16 bg-orange-600 shadow md:flex md:items-center md:justify-between z-[1000]">
                 <div className="container flex justify-between items-center h-full px-6">
-                    <a href="/" className="text-xl font-bold">
+                    <a href="/" className="text-xl font-bold text-white">
                         Restoran4ik
                     </a>
                     <span className="text-3xl cursor-pointer md:hidden block">
