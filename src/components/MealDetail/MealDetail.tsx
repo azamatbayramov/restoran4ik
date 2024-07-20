@@ -1,8 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { meals } from '@/data/meals';
 import { Meal } from '@/types/meal';
+import { getMealById } from '@/firebase/entities/meals';
 
 interface MealDetailProps {
     mealId: string;
@@ -12,8 +12,9 @@ const MealDetail: React.FC<MealDetailProps> = ({ mealId }) => {
     const [meal, setMeal] = useState<Meal | null>(null);
 
     useEffect(() => {
-        const fetchedMeal = meals.find((m) => m.id === mealId);
-        setMeal(fetchedMeal || null);
+        getMealById(mealId).then((meal) => {
+            setMeal(meal);
+        });
     }, [mealId]);
 
     if (!meal) return <div>Loading...</div>;

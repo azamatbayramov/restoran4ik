@@ -1,10 +1,10 @@
 import MealDetail from '../../../components/MealDetail/MealDetail';
-import { meals } from '@/data/meals';
+import { getMeals } from '@/firebase/entities/meals';
 
 export async function generateStaticParams() {
-    return meals.map((meal) => ({
-        id: meal.id.toString(),
-    }));
+    return getMeals().then((meals) => {
+        return meals.map((meal) => ({ id: meal.id }));
+    });
 }
 
 interface MealDetailPageProps {
