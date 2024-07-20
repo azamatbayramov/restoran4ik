@@ -27,7 +27,7 @@
         };
 
         return (
-            <header className="fixed top-0 left-0 w-full h-16 bg-orange-600 shadow md:flex md:items-center md:justify-between z-1000">
+            <header className="fixed top-0 left-0 w-full h-16 bg-orange-600 shadow md:flex md:items-center md:justify-between z-[1000]">
                 <div className="container flex justify-between items-center h-full px-6">
                     <a href="/" className="text-xl font-bold">
                         Restoran4ik
@@ -36,7 +36,7 @@
                         <i className="bx bx-menu" onClick={toggleMenu}></i>
                     </span>
                 </div>
-                <div id="menu-list" className="md:flex md:items-center bg-orange-600 md:z-auto md:static fixed w-full left-0 md:w-auto md:py-0 py-4 md:pl-0 pl-7 md:opacity-100 opacity-0 top-[-400px] transition-all ease-in duration-300 z-1000">
+                <div id="menu-list" className="md:flex md:items-center bg-orange-600 md:z-auto md:static fixed w-full left-0 md:w-auto md:py-0 py-4 md:pl-0 pl-7 md:opacity-100 opacity-0 top-[-400px] transition-all ease-in duration-300 z-[1000]">
                     <a href="/meals" className="block mx-6 my-6 md:my-0 text-white hover:text-gray-300 font-semibold">Meals</a>
                     <a href="/tables" className="block mx-6 my-6 md:my-0 text-white hover:text-gray-300 font-semibold">Tables</a>
                     <a href="#" className="inline-block bg-cyan-400 text-white duration-500 px-6 py-2 mx-6 hover:bg-cyan-500 rounded whitespace-nowrap font-semibold">
