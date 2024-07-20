@@ -3,19 +3,12 @@
 import { useEffect, useState } from 'react';
 import { meals } from '../../data/meals';
 
-interface BJU {
-  protein: number;
-  fat: number;
-  carbs: number;
-}
-
 interface Meal {
   id: number;
   title: string;
   price: string;
   imageSrc: string;
   composition: string;
-  bju: BJU;
   description: string;
 }
 
@@ -64,6 +57,8 @@ const MealDetail: React.FC<MealDetailProps> = ({ mealId }) => {
 
   const detailsStyle = {
     flex: 1,
+    display: 'flex',
+    flexDirection: 'column',
   };
 
   const headerStyle = {
@@ -87,31 +82,13 @@ const MealDetail: React.FC<MealDetailProps> = ({ mealId }) => {
     margin: '10px 0',
   };
 
-  const bjuContainerStyle = {
-    display: 'flex',
-    gap: '10px',
-    margin: '10px 0',
-  };
-
-  const bjuItemStyle = {
-    backgroundColor: '#ff6600', // Orange background
-    color: '#fff', // White text
-    width: '100px',
-    height: '50px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: '8px', // Rounded corners
-    fontSize: '14px',
-  };
-
   const descriptionContainerStyle = {
     backgroundColor: '#4CAF50', // Green background
     color: '#fff', // White text
     padding: '10px',
     borderRadius: '8px', // Rounded corners
     fontSize: '16px',
-    margin: '10px 0',
+    marginTop: 'auto', // Push description to the bottom
   };
 
   return (
@@ -122,11 +99,6 @@ const MealDetail: React.FC<MealDetailProps> = ({ mealId }) => {
           <div style={headerStyle}>{meal.title}</div> {/* Dish name in colored block */}
           <p style={priceStyle}>Price: ${meal.price}</p>
           <p style={compositionStyle}>Composition: {meal.composition}</p>
-          <div style={bjuContainerStyle}>
-            <div style={bjuItemStyle}>Protein: {meal.bju.protein}g</div>
-            <div style={bjuItemStyle}>Fat: {meal.bju.fat}g</div>
-            <div style={bjuItemStyle}>Carbs: {meal.bju.carbs}g</div>
-          </div>
           <div style={descriptionContainerStyle}>Description: {meal.description}</div>
         </div>
       </div>
