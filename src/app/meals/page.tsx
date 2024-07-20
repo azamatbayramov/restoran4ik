@@ -2,12 +2,10 @@
 import React, { useState } from 'react';
 import MealCard from '@/components/MealCard/MealCard';
 import { Meal, NewMeal } from '@/types/meal';
-import { meals } from '@/data/meals';
-
-const initialMeals: Meal[] = meals;
+import { getMeals } from '@/firebase/entities/meals';
 
 const Page: React.FC = () => {
-    const [meals, setMeals] = useState<Meal[]>(initialMeals);
+    const [meals, setMeals] = useState<Meal[]>([]);
     const [newDish, setNewDish] = useState<NewMeal>({
         image: null,
         title: '',
@@ -20,6 +18,8 @@ const Page: React.FC = () => {
         bju: { protein: 0, fat: 0, carbs: 0 },
     });
     const [isFormVisible, setFormVisible] = useState<boolean>(false);
+
+    getMeals().then((meals) => setMeals(meals));
 
     // State for validation errors
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
