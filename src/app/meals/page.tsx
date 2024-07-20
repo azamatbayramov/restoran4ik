@@ -56,16 +56,44 @@ const Page: React.FC = () => {
     });
     const [isFormVisible, setFormVisible] = useState<boolean>(false);
 
+    // State for validation errors
+    const [errors, setErrors] = useState<{ [key: string]: string }>({});
+
+    // Function to validate form
+    const validateForm = () => {
+        const newErrors: { [key: string]: string } = {};
+
+        if (!newDish.name.trim()) {
+            newErrors.name = 'Name is required.';
+        }
+
+        if (newDish.price <= 0) {
+            newErrors.price = 'Price must be greater than zero.';
+        }
+
+        if (!newDish.description.trim()) {
+            newErrors.description = 'Description is required.';
+        }
+
+        if (newDish.tags.length === 0) {
+            newErrors.tags = 'At least one tag is required.';
+        }
+
+        setErrors(newErrors);
+
+        return Object.keys(newErrors).length === 0;
+    };
+
     const handleAddDish = () => {
-        if (newDish.name && newDish.price > 0) {
-            // data for DB (adding new meal). imageFile - uploaded file, image - just temp url
+        if (validateForm()) {
+            // Data for DB (adding new meal). imageFile - uploaded file, image - just temp URL
             const dishToAdd: Dish = {
                 ...newDish,
                 image: newDish.imageFile ? URL.createObjectURL(newDish.imageFile) : newDish.image ?? 'https://via.placeholder.com/400x300',
                 price: parseFloat(newDish.price.toString()),
                 id: (meals.length + 1).toString()
             };
-            
+
             setMeals([...meals, dishToAdd]);
             setNewDish({
                 image: null,
@@ -77,8 +105,7 @@ const Page: React.FC = () => {
                 imageFile: null
             });
             setFormVisible(false);
-        } else {
-            alert('Please fill out all required fields.');
+            setErrors({});
         }
     };
 
@@ -121,31 +148,39 @@ const Page: React.FC = () => {
                         />
                         <input
                             type="text"
-                            placeholder="Name"
+                            placeholder="Dish name"
                             value={newDish.name}
                             onChange={(e) => setNewDish({ ...newDish, name: e.target.value })}
-                            className="border py-2 px-4 mb-2 rounded w-full max-w-xs"
+                            className={`border py-2 px-4 mb-2 rounded w-full max-w-xs ${errors.name ? 'border-red-500' : 'border-gray-300'}`}
                         />
+                        {errors.name && <p className="text-red-500 mb-2">{errors.name}</p>}
+
                         <input
                             type="number"
                             placeholder="Price"
                             value={newDish.price}
                             onChange={(e) => setNewDish({ ...newDish, price: parseFloat(e.target.value) })}
-                            className="border py-2 px-4 mb-2 rounded w-full max-w-xs"
+                            className={`border py-2 px-4 mb-2 rounded w-full max-w-xs ${errors.price ? 'border-red-500' : 'border-gray-300'}`}
                         />
+                        {errors.price && <p className="text-red-500 mb-2">{errors.price}</p>}
+
                         <input
                             type="text"
                             placeholder="Tags (comma separated)"
                             value={newDish.tags.join(', ')}
                             onChange={(e) => setNewDish({ ...newDish, tags: e.target.value.split(',').map(tag => tag.trim()) })}
-                            className="border py-2 px-4 mb-2 rounded w-full max-w-xs"
+                            className={`border py-2 px-4 mb-2 rounded w-full max-w-xs ${errors.tags ? 'border-red-500' : 'border-gray-300'}`}
                         />
+                        {errors.tags && <p className="text-red-500 mb-2">{errors.tags}</p>}
+
                         <textarea
                             placeholder="Description"
                             value={newDish.description}
                             onChange={(e) => setNewDish({ ...newDish, description: e.target.value })}
-                            className="border py-2 px-4 mb-2 rounded w-full max-w-xs"
+                            className={`border py-2 px-4 mb-2 rounded w-full max-w-xs ${errors.description ? 'border-red-500' : 'border-gray-300'}`}
                         />
+                        {errors.description && <p className="text-red-500 mb-2">{errors.description}</p>}
+
                         <label className="inline-flex items-center mb-2">
                             <input
                                 type="checkbox"
@@ -155,6 +190,7 @@ const Page: React.FC = () => {
                             />
                             <span className="ml-2">Available</span>
                         </label>
+
                         <button
                             onClick={handleAddDish}
                             className="bg-cyan-400 font-bold text-white py-2 px-4 rounded hover:bg-cyan-500"
