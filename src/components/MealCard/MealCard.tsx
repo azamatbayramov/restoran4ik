@@ -1,13 +1,15 @@
 import React from "react";
+import Link from 'next/link';
 
 interface MealCardProps {
+    id: string;
     imageSrc: string;
     title: string;
     price: string;
     available: boolean;
 }
 
-const MealCard: React.FC<MealCardProps> = ({ imageSrc, title, price, available }) => {
+const MealCard: React.FC<MealCardProps> = ({id, imageSrc, title, price, available }) => {
     return (
         <div className="max-w-sm rounded overflow-hidden shadow-lg bg-white">
             <div className="relative w-full" style={{ paddingTop: '75%' }}> {}
@@ -28,9 +30,12 @@ const MealCard: React.FC<MealCardProps> = ({ imageSrc, title, price, available }
                         />
                     </p>
                 </div>
+                <Link href={`/meals/${id}`}>
+                    <p>View Details</p>
+                </Link>
             </div>
         </div>
     );
-};
+}
 
 export default MealCard;

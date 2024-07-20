@@ -169,6 +169,7 @@ const Page: React.FC = () => {
                 {meals.map((dish) => (
                     <div key={dish.id} className="max-w-xs w-full">
                         <MealCard
+                            id={dish.id}
                             imageSrc={dish.image}
                             title={dish.name}
                             price={dish.price.toFixed(2)}
