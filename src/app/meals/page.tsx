@@ -1,9 +1,9 @@
 'use client';
 import React, { useState } from 'react';
 import MealCard from '@/components/MealCard/MealCard';
-import { Dish } from '@/types/dish';
+import { Meal } from '@/types/meal';
 
-const initialMeals: Dish[] = [
+const initialMeals: Meal[] = [
     {
         id: '1',
         image: 'https://via.placeholder.com/400x300',
@@ -47,7 +47,7 @@ interface NewDish {
 }
 
 const Page: React.FC = () => {
-    const [meals, setMeals] = useState<Dish[]>(initialMeals);
+    const [meals, setMeals] = useState<Meal[]>(initialMeals);
     const [newDish, setNewDish] = useState<NewDish>({
         image: null,
         name: '',
@@ -90,7 +90,7 @@ const Page: React.FC = () => {
     const handleAddDish = () => {
         if (validateForm()) {
             // Data for DB (adding new meal). imageFile - uploaded file, image - just temp URL
-            const dishToAdd: Dish = {
+            const dishToAdd: Meal = {
                 ...newDish,
                 image: newDish.imageFile
                     ? URL.createObjectURL(newDish.imageFile)
@@ -153,7 +153,7 @@ const Page: React.FC = () => {
                         />
                         <input
                             type="text"
-                            placeholder="Dish name"
+                            placeholder="Meal name"
                             value={newDish.name}
                             onChange={(e) =>
                                 setNewDish({ ...newDish, name: e.target.value })
