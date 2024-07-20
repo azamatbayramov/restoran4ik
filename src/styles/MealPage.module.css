@@ -1,5 +1,4 @@
-/* src/styles/MealPage.module.css */
-.container {
+/* .container {
   padding: 20px;
 }
 .meal-card {
@@ -11,4 +10,68 @@
 .meal-card img {
   width: 100%;
   height: auto;
+} */
+
+.product {
+    display: flex;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.productImage {
+    width: 300px;
+    height: 300px;
+    background-color: #e0e0e0;
+    border-radius: 8px;
+    margin-right: 20px;
+    object-fit: cover;
+}
+
+.productDetails {
+    flex: 1;
+}
+
+.title {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0 0 10px;
+}
+
+.price {
+    font-size: 20px;
+    color: #ff6600;
+    font-weight: bold;
+}
+
+.composition,
+.description {
+    font-size: 16px;
+    margin: 10px 0;
+}
+
+.bju {
+    display: flex;
+    gap: 10px;
+    margin: 10px 0;
+}
+
+.bjuItem {
+    width: 50px;
+    height: 50px;
+    background-color: pink;
+    border-radius: 4px;
+}
+
+.funImage {
+    margin-top: 20px;
+}
+
+.funImage img {
+    max-width: 100px;
+    border-radius: 8px;
 }
