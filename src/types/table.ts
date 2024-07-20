@@ -1,5 +1,5 @@
 export interface Table {
-    id: string;
+    id?: string;
     title: string;
     isOccupied: boolean;
 }

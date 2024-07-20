@@ -2,46 +2,34 @@
 import React, { useState } from 'react';
 import TableCard from '@/components/TableCard/TableCard';
 import { Table } from '@/types/table';
-
-// Initial list of tables
-const initialTables: Table[] = [
-    { id: '1', title: 'Table 1', isOccupied: true },
-    { id: '2', title: 'Table 2', isOccupied: false },
-    { id: '3', title: 'Table 3', isOccupied: true },
-    { id: '4', title: 'Table 4', isOccupied: false },
-    { id: '5', title: 'Table 5', isOccupied: true },
-];
+import { addTable, deleteTable, getTableById, getTables, updateTable } from '@/firebase/entities/tables';
 
 const Page: React.FC = () => {
     // State to manage the list of tables, edit mode, and current editing table
-    const [tables, setTables] = useState<Table[]>(initialTables);
+    const [tables, setTables] = useState<Table[]>([]);
     const [editMode, setEditMode] = useState<boolean>(false);
     const [editingTableId, setEditingTableId] = useState<string | null>(null);
     const [newTitle, setNewTitle] = useState<string>('');
     const [nameError, setNameError] = useState<boolean>(false);
 
+    getTables().then((tables) => setTables(tables));
+
     // Function to add a new table
-    const addTable = () => {
-        if (newTitle.trim().length > 14) {
+    const addTable1 = () => {
+        if (newTitle.trim().length > 14 || newTitle.trim().length === 0) {
             setNameError(true);
             return;
         }
-        const maxId = tables.reduce(
-            (max, table) => Math.max(max, parseInt(table.id)),
-            0,
-        );
-        const newTableNumber = maxId + 1;
-        const title =
-            newTitle.trim().length === 0
-                ? `Table ${newTableNumber}`
-                : newTitle.trim();
+
+        const title = newTitle.trim();
 
         const newTable: Table = {
-            id: newTableNumber.toString(),
             title,
             isOccupied: false,
         };
-        setTables((prevTables) => [...prevTables, newTable]);
+
+        addTable(newTable);
+
         setNewTitle(''); // Reset the new title after adding
         setNameError(false); // Reset error after successful add
     };
@@ -57,22 +45,16 @@ const Page: React.FC = () => {
     };
 
     // Function to delete a table by id
-    const deleteTable = (id: string) => {
-        setTables((prevTables) =>
-            prevTables.filter((table) => table.id !== id),
-        );
+    const deleteTableFunc = (id: string) => {
+        deleteTable(id);
     };
 
     // Function to toggle the isOccupied status of a table
     const toggleOccupiedStatus = (id: string) => {
         if (editMode) {
-            setTables((prevTables) =>
-                prevTables.map((table) =>
-                    table.id === id
-                        ? { ...table, isOccupied: !table.isOccupied }
-                        : table,
-                ),
-            );
+            const table = tables.find((table) => table.id === id);
+
+            updateTable(id, { isOccupied: !table?.isOccupied });
         }
     };
 
@@ -83,13 +65,8 @@ const Page: React.FC = () => {
             return;
         }
         if (editingTableId !== null) {
-            setTables((prevTables) =>
-                prevTables.map((table) =>
-                    table.id === editingTableId
-                        ? { ...table, title: newTitle.trim() }
-                        : table,
-                ),
-            );
+            updateTable(editingTableId, { title: newTitle });
+
             setEditingTableId(null);
             setNewTitle('');
             setNameError(false); // Reset error after successful rename
@@ -115,7 +92,7 @@ const Page: React.FC = () => {
                         disabled={editMode} // Disable input in edit mode
                     />
                     <button
-                        onClick={addTable}
+                        onClick={addTable1}
                         disabled={editMode}
                         className={`bg-cyan-400 text-white font-bold py-2 px-4 rounded hover:bg-cyan-500 focus:outline-none ${
                             editMode ? 'opacity-50 cursor-not-allowed' : ''
@@ -186,7 +163,7 @@ const Page: React.FC = () => {
                             />
                             {editMode && (
                                 <button
-                                    onClick={() => deleteTable(table.id)}
+                                    onClick={() => deleteTableFunc(table.id)}
                                     className="absolute top-2 right-2 bg-red-600 text-white rounded-full h-6 w-6 flex items-center justify-center hover:bg-red-800"
                                 >
                                     X
