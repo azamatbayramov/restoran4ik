@@ -1,14 +1,20 @@
-import {Dish} from '@/types/dish';
-import {addDocument, deleteDocument, getCollection, getDocument, updateDocument} from '@/firebase/firestore';
+import { Dish } from '@/types/dish';
+import {
+    addDocument,
+    deleteDocument,
+    getCollection,
+    getDocument,
+    updateDocument,
+} from '@/firebase/firestore';
 
 const collectionName = 'dishes';
 
 export const getDishes = async (): Promise<Dish[]> => {
-    return await getCollection(collectionName) as Dish[];
+    return (await getCollection(collectionName)) as Dish[];
 };
 
 export const getDishById = async (id: string): Promise<Dish | null> => {
-    return await getDocument(collectionName, id) as Dish | null;
+    return (await getDocument(collectionName, id)) as Dish | null;
 };
 
 export const addDish = async (dish: Dish) => {

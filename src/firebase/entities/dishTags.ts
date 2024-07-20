@@ -1,14 +1,20 @@
-import {DishTag} from '@/types/dishTag';
-import {addDocument, deleteDocument, getCollection, getDocument, updateDocument} from '@/firebase/firestore';
+import { DishTag } from '@/types/dishTag';
+import {
+    addDocument,
+    deleteDocument,
+    getCollection,
+    getDocument,
+    updateDocument,
+} from '@/firebase/firestore';
 
 const collectionName = 'dishTags';
 
 export const getDishTags = async (): Promise<DishTag[]> => {
-    return await getCollection(collectionName) as DishTag[];
+    return (await getCollection(collectionName)) as DishTag[];
 };
 
 export const getDishTagById = async (id: string): Promise<DishTag | null> => {
-    return await getDocument(collectionName, id) as DishTag | null;
+    return (await getDocument(collectionName, id)) as DishTag | null;
 };
 
 export const addDishTag = async (dishTag: DishTag) => {

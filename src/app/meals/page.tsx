@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
-import MealCard from "@/components/MealCard/MealCard";
-import { Dish } from "../../types/dish";
+import MealCard from '@/components/MealCard/MealCard';
+import { Dish } from '@/types/dish';
 
 const initialMeals: Dish[] = [
     {
@@ -11,7 +11,8 @@ const initialMeals: Dish[] = [
         price: 14.99,
         available: false,
         tags: ['Italian', 'Pasta'],
-        description: 'A classic Italian pasta dish made with eggs, cheese, pancetta, and pepper.',
+        description:
+            'A classic Italian pasta dish made with eggs, cheese, pancetta, and pepper.',
     },
     {
         id: '2',
@@ -20,7 +21,8 @@ const initialMeals: Dish[] = [
         price: 16.99,
         available: true,
         tags: ['Italian', 'Chicken'],
-        description: 'Breaded chicken cutlets topped with marinara sauce and melted cheese.',
+        description:
+            'Breaded chicken cutlets topped with marinara sauce and melted cheese.',
     },
     {
         id: '3',
@@ -29,7 +31,8 @@ const initialMeals: Dish[] = [
         price: 12.99,
         available: true,
         tags: ['Salad', 'Healthy'],
-        description: 'A fresh salad with romaine lettuce, croutons, and Caesar dressing.',
+        description:
+            'A fresh salad with romaine lettuce, croutons, and Caesar dressing.',
     },
 ];
 
@@ -52,7 +55,7 @@ const Page: React.FC = () => {
         available: false,
         tags: [],
         description: '',
-        imageFile: null
+        imageFile: null,
     });
     const [isFormVisible, setFormVisible] = useState<boolean>(false);
 
@@ -89,9 +92,11 @@ const Page: React.FC = () => {
             // Data for DB (adding new meal). imageFile - uploaded file, image - just temp URL
             const dishToAdd: Dish = {
                 ...newDish,
-                image: newDish.imageFile ? URL.createObjectURL(newDish.imageFile) : newDish.image ?? 'https://via.placeholder.com/400x300',
+                image: newDish.imageFile
+                    ? URL.createObjectURL(newDish.imageFile)
+                    : (newDish.image ?? 'https://via.placeholder.com/400x300'),
                 price: parseFloat(newDish.price.toString()),
-                id: (meals.length + 1).toString()
+                id: (meals.length + 1).toString(),
             };
 
             setMeals([...meals, dishToAdd]);
@@ -102,7 +107,7 @@ const Page: React.FC = () => {
                 available: false,
                 tags: [],
                 description: '',
-                imageFile: null
+                imageFile: null,
             });
             setFormVisible(false);
             setErrors({});
@@ -115,13 +120,13 @@ const Page: React.FC = () => {
             setNewDish({
                 ...newDish,
                 imageFile: file,
-                image: URL.createObjectURL(file)
+                image: URL.createObjectURL(file),
             });
         } else {
             setNewDish({
                 ...newDish,
                 imageFile: null,
-                image: null
+                image: null,
             });
         }
     };
@@ -150,42 +155,76 @@ const Page: React.FC = () => {
                             type="text"
                             placeholder="Dish name"
                             value={newDish.name}
-                            onChange={(e) => setNewDish({ ...newDish, name: e.target.value })}
+                            onChange={(e) =>
+                                setNewDish({ ...newDish, name: e.target.value })
+                            }
                             className={`border py-2 px-4 mb-2 rounded w-full max-w-xs ${errors.name ? 'border-red-500' : 'border-gray-300'}`}
                         />
-                        {errors.name && <p className="text-red-500 mb-2">{errors.name}</p>}
+                        {errors.name && (
+                            <p className="text-red-500 mb-2">{errors.name}</p>
+                        )}
 
                         <input
                             type="number"
                             placeholder="Price"
                             value={newDish.price}
-                            onChange={(e) => setNewDish({ ...newDish, price: parseFloat(e.target.value) })}
+                            onChange={(e) =>
+                                setNewDish({
+                                    ...newDish,
+                                    price: parseFloat(e.target.value),
+                                })
+                            }
                             className={`border py-2 px-4 mb-2 rounded w-full max-w-xs ${errors.price ? 'border-red-500' : 'border-gray-300'}`}
                         />
-                        {errors.price && <p className="text-red-500 mb-2">{errors.price}</p>}
+                        {errors.price && (
+                            <p className="text-red-500 mb-2">{errors.price}</p>
+                        )}
 
                         <input
                             type="text"
                             placeholder="Tags (comma separated)"
                             value={newDish.tags.join(', ')}
-                            onChange={(e) => setNewDish({ ...newDish, tags: e.target.value.split(',').map(tag => tag.trim()) })}
+                            onChange={(e) =>
+                                setNewDish({
+                                    ...newDish,
+                                    tags: e.target.value
+                                        .split(',')
+                                        .map((tag) => tag.trim()),
+                                })
+                            }
                             className={`border py-2 px-4 mb-2 rounded w-full max-w-xs ${errors.tags ? 'border-red-500' : 'border-gray-300'}`}
                         />
-                        {errors.tags && <p className="text-red-500 mb-2">{errors.tags}</p>}
+                        {errors.tags && (
+                            <p className="text-red-500 mb-2">{errors.tags}</p>
+                        )}
 
                         <textarea
                             placeholder="Description"
                             value={newDish.description}
-                            onChange={(e) => setNewDish({ ...newDish, description: e.target.value })}
+                            onChange={(e) =>
+                                setNewDish({
+                                    ...newDish,
+                                    description: e.target.value,
+                                })
+                            }
                             className={`border py-2 px-4 mb-2 rounded w-full max-w-xs ${errors.description ? 'border-red-500' : 'border-gray-300'}`}
                         />
-                        {errors.description && <p className="text-red-500 mb-2">{errors.description}</p>}
+                        {errors.description && (
+                            <p className="text-red-500 mb-2">
+                                {errors.description}
+                            </p>
+                        )}
 
                         <label className="inline-flex items-center mb-2">
                             <input
                                 type="checkbox"
                                 checked={newDish.available}
-                                onChange={(e) => setNewDish({ ...newDish, available: e.target.checked })}
+                                onChange={(e) =>
+                                    setNewDish({
+                                        ...newDish,
+                                        available: e.target.checked,
+                                    })
+                                }
                                 className="form-checkbox"
                             />
                             <span className="ml-2">Available</span>
