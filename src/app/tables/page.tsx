@@ -1,37 +1,31 @@
 'use client';
 import React, { useState } from 'react';
 import TableCard from '@/components/TableCard/TableCard';
-
-// Define a type for the table object
-interface Table {
-    id: number;
-    title: string;
-    isOccupied: boolean;
-}
+import { Table } from '@/types/table';
 
 // Initial list of tables
 const initialTables: Table[] = [
-    { id: 1, title: 'Table 1', isOccupied: true },
-    { id: 2, title: 'Table 2', isOccupied: false },
-    { id: 3, title: 'Table 3', isOccupied: true },
-    { id: 4, title: 'Table 4', isOccupied: false },
-    { id: 5, title: 'Table 5', isOccupied: true },
+    { id: '1', title: 'Table 1', isOccupied: true },
+    { id: '2', title: 'Table 2', isOccupied: false },
+    { id: '3', title: 'Table 3', isOccupied: true },
+    { id: '4', title: 'Table 4', isOccupied: false },
+    { id: '5', title: 'Table 5', isOccupied: true },
 ];
 
 const Page: React.FC = () => {
     // State to manage the list of tables, edit mode, and current editing table
     const [tables, setTables] = useState<Table[]>(initialTables);
     const [editMode, setEditMode] = useState<boolean>(false);
-    const [editingTableId, setEditingTableId] = useState<number | null>(null);
+    const [editingTableId, setEditingTableId] = useState<string | null>(null);
     const [newTitle, setNewTitle] = useState<string>('');
 
     // Function to add a new table
     const addTable = () => {
-        const maxId = tables.reduce((max, table) => Math.max(max, table.id), 0);
+        const maxId = tables.reduce((max, table) => Math.max(max, parseInt(table.id)), 0);
         const newTableNumber = maxId + 1;
 
         const newTable: Table = {
-            id: newTableNumber,
+            id: newTableNumber.toString(),
             title: `Table ${newTableNumber}`,
             isOccupied: false,
         };
@@ -48,14 +42,14 @@ const Page: React.FC = () => {
     };
 
     // Function to delete a table by id
-    const deleteTable = (id: number) => {
+    const deleteTable = (id: string) => {
         setTables((prevTables) =>
             prevTables.filter((table) => table.id !== id),
         );
     };
 
     // Function to toggle the isOccupied status of a table
-    const toggleOccupiedStatus = (id: number) => {
+    const toggleOccupiedStatus = (id: string) => {
         if (editMode) {
             setTables((prevTables) =>
                 prevTables.map((table) =>
